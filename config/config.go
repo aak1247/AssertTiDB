@@ -11,10 +11,11 @@ type (
 	}
 	Tidb struct {
 		Host     string `default:"127.0.0.1" env:"ASSERT_TIDB_HOST"`
-		Port     int    `default:"27017" env:"ASSERT_TIDB_PORT"`
+		Port     int    `default:"4000" env:"ASSERT_TIDB_PORT"`
 		Username string `default:"" env:"ASSERT_TIDB_USERNAME"`
 		Password string `default:"" env:"ASSERT_TIDB_PASSWORD"`
 		Database string `require:"true" default:"" env:"ASSERT_TIDB_DATABASE"`
+		Params   string `default:"" env:"ASSERT_TIDB_DB_PARAMS"`
 		URL      string `default:"" env:"ASSERT_TIDB_CONNECT_STRING"`
 	}
 )
@@ -36,14 +37,22 @@ func GetEnv() *Config {
 	return config
 }
 
-func (this *Config) GetAddr() string {
-	return GetEnv().Host + ":" + strconv.Itoa(GetEnv().Port)
-}
-
-func (this *Mongodb) GetUrl() string {
+func (this *Tidb) GetUrl() string {
 	if this.URL != "" {
 		return this.URL
 	} else {
-		return "mongodb://" + this.Host + ":" + strconv.Itoa(this.Port)
+		var url string
+		url += this.Username
+		if this.Password != "" {
+			url += ":" + this.Password
+		}
+		if this.Username != "" {
+			url += "@"
+		}
+		url += this.Host + ":" + strconv.Itoa(this.Port) + "/" + this.Database
+		if this.Params != "" {
+			url += "?" + this.Params
+		}
+		// [username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramN=valueN]
 	}
 }
