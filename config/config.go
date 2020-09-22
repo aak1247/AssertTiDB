@@ -49,10 +49,11 @@ func (this *Tidb) GetUrl() string {
 		if this.Username != "" {
 			url += "@"
 		}
-		url += this.Host + ":" + strconv.Itoa(this.Port) + "/" + this.Database
+		url += "tcp(" + this.Host + ":" + strconv.Itoa(this.Port) + ")/" + this.Database
 		if this.Params != "" {
 			url += "?" + this.Params
 		}
+		return url
 		// [username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramN=valueN]
 	}
 }

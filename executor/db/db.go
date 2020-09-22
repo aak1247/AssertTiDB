@@ -13,7 +13,8 @@ var db *sql.DB
 func GetDb() *sql.DB {
 	if db == nil {
 		env := config.GetEnv()
-		db, err := sql.Open("mysql", env.Tidb.GetUrl())
+		var err error
+		db, err = sql.Open("mysql", env.Tidb.GetUrl())
 		if err != nil {
 			panic(err)
 		}

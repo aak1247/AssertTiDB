@@ -1,6 +1,8 @@
 package generator
 
-import "go/types"
+import (
+	"go/types"
+)
 
 type StringGenerator struct {
 	minLen int
@@ -21,9 +23,9 @@ func (this *StringGenerator) Generate() interface{} {
 	var byteGenerator = IntegerGenerator{}
 	byteGenerator.Init(-128, 128, types.Byte)
 	len := lenGenerator.Generate()
-	var bytes = make([]byte, len.(int64))
+	var bytes = make([]rune, len.(int64))
 	for i := 0; int64(i) < len.(int64); i++ {
-		bytes[i] = byte(byteGenerator.Generate().(byte))
+		bytes[i] = rune(byteGenerator.Generate().(byte))
 	}
 	return string(bytes)
 }
