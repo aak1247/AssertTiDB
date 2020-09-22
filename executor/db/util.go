@@ -10,7 +10,7 @@ func Scan(rows sql.Rows, columns []s.Column) []map[string]s.ColumnData {
 	res := make([]map[string]s.ColumnData, 0)
 	defer rows.Close()
 	for rows.Next() {
-		//定义变量接收查询数据
+
 		data := make([]interface{}, len(columns))
 		for i := range data {
 			curData := columns[i].GenerateColumnRefData().Data
